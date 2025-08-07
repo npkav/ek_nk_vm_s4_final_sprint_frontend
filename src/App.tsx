@@ -1,182 +1,104 @@
-import { useState, useEffect } from 'react';
-import CustomerList from './components/CustomerList';
-import CustomerForm from './components/CustomerForm';
-import IssueList from './components/IssueList';
-import IssueForm from './components/IssueForm';
-import FeedbackList from './components/FeedbackList';
-import FeedbackForm from './components/FeedbackForm';
-import type { Customer, Issue, Feedback } from './types';
+import { useState, useEffect, createContext } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+
+// Pages
+import HomePage from './pages/HomePage';
+import CustomerPage from './pages/CustomerPage';
+import FeedbackPage from './pages/FeedbackPage';
+import RepPage from './pages/RepPage';
+import RolePage from './pages/RolePage';
+
+// Components
+import Navbar from './components/Navbar';
+
+// Services
 import { customerService } from './services/customerService';
 import { issueService } from './services/issueService';
 
+// Types
+import type { Customer, Issue } from './types';
+
+// Create a context for dark mode
+export const ThemeContext = createContext({
+  darkMode: false,
+  toggleDarkMode: () => {}
+});
+
 function App() {
-  const [activeTab, setActiveTab] = useState<'customers' | 'issues' | 'feedback'>('customers');
-  const [showForm, setShowForm] = useState(false);
-  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-  const [editingIssue, setEditingIssue] = useState<Issue | null>(null);
-  const [editingFeedback, setEditingFeedback] = useState<Feedback | null>(null);
-  const [refresh, setRefresh] = useState(0);
-  
-  // dropdown data shii
+  // Check if user previously set dark mode preference
+  const storedDarkMode = localStorage.getItem('darkMode') === 'true';
+  const [darkMode, setDarkMode] = useState(storedDarkMode);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
+  const [refresh, setRefresh] = useState(0);
 
-  useEffect(() => {loadInitialData();}, []);
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => {
+      const newMode = !prevMode;
+      localStorage.setItem('darkMode', newMode.toString());
+      return newMode;
+    });
+  };
 
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [refresh]);
 
   const loadInitialData = async () => {
     try {
-      const [customersData, issuesData] = await Promise.all([customerService.getAllCustomers(), issueService.getAllIssues()]);
+      const [customersData, issuesData] = await Promise.all([
+        customerService.getAllCustomers(),
+        issueService.getAllIssues()
+      ]);
       setCustomers(customersData);
       setIssues(issuesData);
-    } catch (err) {console.error('Failed to load initial data:', err);}
-  };
-
-  const handleAddNew = () => {
-    setEditingCustomer(null);
-    setEditingIssue(null);
-    setEditingFeedback(null);
-    setShowForm(true);
-  };
-
-  const handleEditCustomer = (customer: Customer) => {
-    setEditingCustomer(customer);
-    setShowForm(true);
-  };
-
-  const handleEditIssue = (issue: Issue) => {
-    setEditingIssue(issue);
-    setShowForm(true);
-  };
-
-  const handleEditFeedback = (feedback: Feedback) => {
-    setEditingFeedback(feedback);
-    setShowForm(true);
-  };
-
-  const handleFormSuccess = () => {
-    setShowForm(false);
-    setEditingCustomer(null);
-    setEditingIssue(null);
-    setEditingFeedback(null);
-    setRefresh(refresh + 1);
-    loadInitialData();
-  };
-
-  const handleFormCancel = () => {
-    setShowForm(false);
-    setEditingCustomer(null);
-    setEditingIssue(null);
-    setEditingFeedback(null);
-  };
-
-  const getTabTitle = () => {
-    switch (activeTab) {
-      case 'customers': return 'Customer Management';
-      case 'issues': return 'Travel Issues';
-      case 'feedback': return 'Customer Feedback';
-      default: return 'Air Travel Feedback System';
+    } catch (err) {
+      console.error('Failed to load initial data:', err);
     }
   };
 
-  const getAddButtonText = () => {
-    switch (activeTab) {
-      case 'customers': return 'Add New Customer';
-      case 'issues': return 'Report New Issue';
-      case 'feedback': return 'Submit Feedback';
-      default: return 'Add New';
-    }
+  const refreshData = () => {
+    setRefresh(prev => prev + 1);
+  };
+
+  const themeContextValue = {
+    darkMode,
+    toggleDarkMode
   };
 
   return (
-    <div>
-      <header>
-        <h1>AIR TRAVEL FEEDBACK SYSTEM</h1>
-        <nav>
-          <button 
-            onClick={() => setActiveTab('customers')}
-            style={{ backgroundColor: activeTab === 'customers' ? '#fff' : '' }}
-          >
-            CUSTOMERS
-          </button>
-          <button 
-            onClick={() => setActiveTab('issues')}
-            style={{ backgroundColor: activeTab === 'issues' ? '#fff' : '' }}
-          >
-            ISSUES
-          </button>
-          <button 
-            onClick={() => setActiveTab('feedback')}
-            style={{ backgroundColor: activeTab === 'feedback' ? '#fff' : '' }}
-          >
-            FEEDBACK
-          </button>
-        </nav>
-        <h2>{getTabTitle()}</h2>
-        {!showForm && (
-          <button onClick={handleAddNew}>{getAddButtonText()}</button>
-        )}
-      </header>
-
-      <main>
-        {!showForm ? (
-          <>
-            {activeTab === 'customers' && (
-              <CustomerList
-                onEdit={handleEditCustomer}
-                refresh={refresh > 0}
+    <ThemeContext.Provider value={themeContextValue}>
+      <Router>
+        <div className="app-container">
+          <Navbar />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/customers" element={<CustomerPage customers={customers} refreshData={refreshData} />} />
+              <Route 
+                path="/feedback" 
+                element={<FeedbackPage 
+                  customers={customers} 
+                  issues={issues} 
+                  refreshData={refreshData} 
+                />} 
               />
-            )}
-            {activeTab === 'issues' && (
-              <IssueList
-                onEdit={handleEditIssue}
-                refresh={refresh > 0}
-                customers={customers}
-              />
-            )}
-            {activeTab === 'feedback' && (
-              <FeedbackList
-                onEdit={handleEditFeedback}
-                refresh={refresh > 0}
-                customers={customers}
-                issues={issues}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            {activeTab === 'customers' && (
-              <CustomerForm
-                customer={editingCustomer}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            )}
-            {activeTab === 'issues' && (
-              <IssueForm
-                issue={editingIssue}
-                customers={customers}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            )}
-            {activeTab === 'feedback' && (
-              <FeedbackForm
-                feedback={editingFeedback}
-                customers={customers}
-                issues={issues}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            )}
-          </>
-        )}
-      </main>
-
-      <footer>
-        <p>EK/NK/VM - FINAL SPRINT - SD12 - Air Travel Feedback Management System</p>
-      </footer>
-    </div>
+              <Route path="/representatives" element={<RepPage />} />
+              <Route path="/roles" element={<RolePage />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </ThemeContext.Provider>
   );
 }
 
