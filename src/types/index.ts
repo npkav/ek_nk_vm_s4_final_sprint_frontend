@@ -24,8 +24,8 @@ export interface ServiceRep {
   firstName: string;
   lastName: string;
   email: string;
-  departmentID: number;
-  roleID: number;
+  departmentID: number | Department;
+  roleID: number | Role;
 }
 
 export interface Issue {
