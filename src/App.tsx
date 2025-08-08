@@ -16,7 +16,7 @@ import { customerService } from './services/customerService';
 import { issueService } from './services/issueService';
 import { departmentService } from './services/departmentService';
 import { roleService } from './services/roleService';
-import { serviceRepService } from './services/serviceRepService';
+
 
 function App() {
   const [activeTab, setActiveTab] = useState<'customers' | 'issues' | 'feedback' | 'departments' | 'roles' | 'servicereps'>('customers');
@@ -34,25 +34,23 @@ function App() {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
-  const [serviceReps, setServiceReps] = useState<ServiceRep[]>([]);
+
 
   useEffect(() => {loadInitialData();}, []);
 
 
   const loadInitialData = async () => {
     try {
-      const [customersData, issuesData, departmentsData, rolesData, serviceRepsData] = await Promise.all([
+      const [customersData, issuesData, departmentsData, rolesData] = await Promise.all([
         customerService.getAllCustomers(), 
         issueService.getAllIssues(),
         departmentService.getAllDepartments(),
         roleService.getAllRoles(),
-        serviceRepService.getAllServiceReps()
       ]);
       setCustomers(customersData);
       setIssues(issuesData);
       setDepartments(departmentsData);
       setRoles(rolesData);
-      setServiceReps(serviceRepsData);
     } catch (err) {console.error('Failed to load initial data:', err);}
   };
 
