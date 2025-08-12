@@ -403,7 +403,7 @@ body.dark-mode .menu-option h3 {
   color: #333;
   border: 1px solid rgba(0,0,0,0.03);
   transition: all 0.3s ease;
-  max-height: 2000px; /* A large value to accommodate content */
+  max-height: 2000px;
   overflow: hidden;
   opacity: 1;
   animation: expandSection 0.4s ease-out;
@@ -429,7 +429,6 @@ body.dark-mode .section-content {
   border: 1px solid rgba(100, 150, 255, 0.05);
 }
 
-/* Button Styles */
 .btn, 
 .back-button,
 button[type="submit"],
@@ -458,7 +457,6 @@ body.dark-mode button[type="button"] {
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
-/* Ensure all buttons have right margin */
 button, .btn, .back-button {
   margin-right: 15px !important;
 }
@@ -488,13 +486,14 @@ button[type="button"]:active {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Form styles */
 form {
   margin-top: 1.5rem;
+  width: 100%;
 }
 
 .form-group {
   margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 label {
@@ -507,42 +506,6 @@ label {
 
 body.dark-mode label {
   color: #9ecbff;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.9);
-  font-family: inherit;
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea {
-  background: rgba(30, 40, 70, 0.7);
-  border: 1px solid rgba(100, 150, 255, 0.15);
-  color: #e0e0e0;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #4d90fe;
-  box-shadow: 0 0 0 3px rgba(77,144,254,0.2);
-}
-
-body.dark-mode input:focus,
-body.dark-mode select:focus,
-body.dark-mode textarea:focus {
-  border-color: #7ba9ff;
-  box-shadow: 0 0 0 3px rgba(123,169,255,0.3);
 }
 
 .card-icon {
@@ -575,7 +538,6 @@ body.dark-mode .dashboard-card:hover .card-icon {
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
-/* Table styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -626,7 +588,6 @@ body.dark-mode tr:hover td {
   background-color: rgba(123, 169, 255, 0.05);
 }
 
-/* Footer styling */
 .footer-container {
   margin-top: 2rem;
   margin-left: auto;
@@ -657,15 +618,28 @@ footer p {
   white-space: nowrap;
 }
 
+.form-group, .section-content form {
+  max-width: 100%;
+}
+
+.section-content input,
+.section-content select,
+.section-content textarea {
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
 }
 
-/* Additional styling for form elements to match theme */
 input, select, textarea {
   width: 100%;
+  box-sizing: border-box; 
+  max-width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
   border-radius: 6px;
@@ -674,6 +648,8 @@ input, select, textarea {
   font-family: inherit;
   font-size: 1rem;
   transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body.dark-mode input, 
@@ -695,18 +671,6 @@ body.dark-mode select:focus,
 body.dark-mode textarea:focus {
   border-color: #7ba9ff;
   box-shadow: 0 0 0 2px rgba(123, 169, 255, 0.3);
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #25517c;
-  transition: color 0.3s;
-}
-
-body.dark-mode label {
-  color: #9ecbff;
 }
 
 table {
@@ -755,7 +719,6 @@ body.dark-mode tr:hover td {
   background-color: rgba(123, 169, 255, 0.1);
 }
 
-/* Form layouts */
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -778,7 +741,6 @@ body.dark-mode .form-title {
   color: #9ecbff;
 }
 
-/* Buttons in existing components */
 .button-primary {
   background-color: #25517c;
   color: white;
