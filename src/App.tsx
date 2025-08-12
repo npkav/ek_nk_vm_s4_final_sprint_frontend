@@ -116,7 +116,7 @@ function App() {
               />
             </Routes>
           </main>
-          <footer>
+          <footer className="footer-container">
             <p>EK/NK/VM - FINAL SPRINT - SD12 - Air Travel Feedback Management System</p>
           </footer>
         </div>

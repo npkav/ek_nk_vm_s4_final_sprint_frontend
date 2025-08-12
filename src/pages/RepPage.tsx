@@ -86,19 +86,6 @@ const RepPage: React.FC<RepPageProps> = ({ roles = [], departments = [], refresh
             </div>
           )}
         </div>
-
-        <div 
-          className={`menu-option ${activeSection === 3 ? 'active' : ''}`}
-          onClick={() => handleSectionClick(3)}
-        >
-          <h3>View representative performance</h3>
-          {activeSection === 3 && (
-            <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <p>Representative performance metrics would be displayed here</p>
-              {/* Performance metrics implementation will go here */}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

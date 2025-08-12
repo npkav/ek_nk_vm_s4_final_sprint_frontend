@@ -89,19 +89,6 @@ const FeedbackPage: React.FC<FeedbackPageProps> = ({ customers, issues, refreshD
             </div>
           )}
         </div>
-
-        <div 
-          className={`menu-option ${activeSection === 3 ? 'active' : ''}`}
-          onClick={() => handleSectionClick(3)}
-        >
-          <h3>View feedback statistics</h3>
-          {activeSection === 3 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <p>Feedback statistics would be displayed here</p>
-              {/* You can add statistics components here */}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
