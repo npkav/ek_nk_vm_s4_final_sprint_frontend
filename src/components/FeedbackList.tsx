@@ -12,6 +12,7 @@ const FeedbackList: React.FC<FeedbackProperties> = ({
 }) => {
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [filterRating, setFilterRating] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // hrmmm
   useEffect(() => {loadFeedback();}, [refresh]);
@@ -19,6 +20,7 @@ const FeedbackList: React.FC<FeedbackProperties> = ({
 
   // tf u do this time
   const loadFeedback = async () => {
+    setIsLoading(true);
     try {
       let data;
       if (filterRating) {data = await feedbackService.getFeedbackByRating(filterRating);} 
@@ -26,6 +28,7 @@ const FeedbackList: React.FC<FeedbackProperties> = ({
       setFeedback(data);
     }
     catch (err) {console.error(err);}
+    finally {setIsLoading(false);}
   };
 
 
@@ -72,7 +75,7 @@ const FeedbackList: React.FC<FeedbackProperties> = ({
         <label>FILTER BY RATING: </label>
         <select 
           value={filterRating} 
-          onChange={(e) => setFilterRating(Number(e.target.value))}
+          onChange={(e) => { setFilterRating(Number(e.target.value)); handleFilterChange(); }}
         >
           <option value={0}>ALL RATINGS</option>
           <option value={1}>1 STAR</option>
@@ -101,12 +104,17 @@ const FeedbackList: React.FC<FeedbackProperties> = ({
         </thead>
         
         <tbody>
-          {feedback.length === 0 && (
+          {isLoading && (
+            <tr>
+              <td colSpan={5}>LOADING...</td>
+            </tr>
+          )}
+          {!isLoading && feedback.length === 0 && (
             <tr>
               <td colSpan={5}>NO FEEDBACK FOUND</td>
             </tr>
           )}
-          {feedback.map((fb) => (
+          {!isLoading && feedback.map((fb) => (
             <tr key={fb.id}>
               <td>{getCustomerName(fb.customerID)}</td>
               <td>{getIssueTitle(fb.issueID)}</td>
