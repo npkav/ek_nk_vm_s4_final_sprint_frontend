@@ -18,9 +18,6 @@ const RolePage: React.FC<RolePageProps> = ({ refreshData = () => {} }) => {
   const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
   const [departments] = useState<Department[]>([]);
 
-  // Load departments - in a real implementation you would fetch them from the API
-  // For now we'll just use an empty array in places requiring departments
-
   const handleSectionClick = (sectionNumber: number) => {
     setActiveSection(sectionNumber === activeSection ? null : sectionNumber);
     setShowRoleForm(false);
