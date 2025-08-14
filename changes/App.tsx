@@ -15,11 +15,9 @@ import Navbar from './components/Navbar';
 // Services
 import { customerService } from './services/customerService';
 import { issueService } from './services/issueService';
-import { departmentService } from './services/departmentService';
-import { roleService } from './services/roleService';
 
 // Types
-import type { Customer, Issue, Department, Role } from './types';
+import type { Customer, Issue } from './types';
 
 // Create a context for dark mode
 export const ThemeContext = createContext({
@@ -33,8 +31,6 @@ function App() {
   const [darkMode, setDarkMode] = useState(storedDarkMode);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [roles, setRoles] = useState<Role[]>([]);
   const [refresh, setRefresh] = useState(0);
 
   const toggleDarkMode = () => {
@@ -59,16 +55,12 @@ function App() {
 
   const loadInitialData = async () => {
     try {
-      const [customersData, issuesData, departmentsData, rolesData] = await Promise.all([
+      const [customersData, issuesData] = await Promise.all([
         customerService.getAllCustomers(),
-        issueService.getAllIssues(),
-        departmentService.getAllDepartments(),
-        roleService.getAllRoles()
+        issueService.getAllIssues()
       ]);
       setCustomers(customersData);
       setIssues(issuesData);
-      setDepartments(departmentsData);
-      setRoles(rolesData);
     } catch (err) {
       console.error('Failed to load initial data:', err);
     }
@@ -100,25 +92,10 @@ function App() {
                   refreshData={refreshData} 
                 />} 
               />
-              <Route 
-                path="/representatives" 
-                element={<RepPage 
-                  roles={roles} 
-                  departments={departments} 
-                  refreshData={refreshData} 
-                />} 
-              />
-              <Route 
-                path="/roles" 
-                element={<RolePage 
-                  refreshData={refreshData} 
-                />} 
-              />
+              <Route path="/representatives" element={<RepPage />} />
+              <Route path="/roles" element={<RolePage />} />
             </Routes>
           </main>
-          <footer className="footer-container">
-            <p>EK/NK/VM - FINAL SPRINT - SD12 - Air Travel Feedback Management System</p>
-          </footer>
         </div>
       </Router>
     </ThemeContext.Provider>

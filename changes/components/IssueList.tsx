@@ -7,7 +7,6 @@ interface IssueProperties {onEdit: (issue: Issue) => void; refresh: boolean; cus
 const IssueList: React.FC<IssueProperties> = ({ onEdit, refresh, customers }) => {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   // hrmmm
   useEffect(() => {loadIssues();}, [refresh]);
@@ -15,7 +14,6 @@ const IssueList: React.FC<IssueProperties> = ({ onEdit, refresh, customers }) =>
 
   // tf u do this time
   const loadIssues = async () => {
-    setIsLoading(true);
     try {
       let data;
       if (selectedCustomer) {data = await issueService.getIssuesByCustomer(selectedCustomer);} 
@@ -23,7 +21,6 @@ const IssueList: React.FC<IssueProperties> = ({ onEdit, refresh, customers }) =>
       setIssues(data);
     }
     catch (err) {console.error(err);}
-    finally {setIsLoading(false);}
   };
 
 
@@ -65,7 +62,7 @@ const IssueList: React.FC<IssueProperties> = ({ onEdit, refresh, customers }) =>
         <label>FILTER BY CUSTOMER: </label>
         <select 
           value={selectedCustomer} 
-          onChange={(e) => { setSelectedCustomer(Number(e.target.value)); handleFilterChange(); }}
+          onChange={(e) => setSelectedCustomer(Number(e.target.value))}
         >
           <option value={0}>ALL CUSTOMERS</option>
           {customers.map(customer => (
@@ -95,17 +92,12 @@ const IssueList: React.FC<IssueProperties> = ({ onEdit, refresh, customers }) =>
         </thead>
         
         <tbody>
-          {isLoading && (
-            <tr>
-              <td colSpan={6}>LOADING...</td>
-            </tr>
-          )}
-          {!isLoading && issues.length === 0 && (
+          {issues.length === 0 && (
             <tr>
               <td colSpan={6}>NO ISSUES FOUND</td>
             </tr>
           )}
-          {!isLoading && issues.map((issue) => (
+          {issues.map((issue) => (
             <tr key={issue.id}>
               <td>{getCustomerName(issue.customerID)}</td>
               <td>{issue.title}</td>

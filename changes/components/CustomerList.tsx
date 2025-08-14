@@ -7,7 +7,6 @@ interface CustomerProperties {onEdit: (customer: Customer) => void; refresh: boo
 const CustomerList: React.FC<CustomerProperties> = ({ onEdit, refresh }) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   // the gang's all here
   useEffect(() => {loadCustomers();}, [refresh]);
@@ -15,7 +14,6 @@ const CustomerList: React.FC<CustomerProperties> = ({ onEdit, refresh }) => {
 
   // bonjour monsieur :3
   const loadCustomers = async () => {
-    setIsLoading(true);
     try {
       let data;
       if (searchTerm) {data = await customerService.searchCustomers(searchTerm);} 
@@ -23,7 +21,6 @@ const CustomerList: React.FC<CustomerProperties> = ({ onEdit, refresh }) => {
       setCustomers(data);
     }
     catch (err) {console.error(err);}
-    finally {setIsLoading(false);}
   };
 
 
@@ -53,7 +50,7 @@ const CustomerList: React.FC<CustomerProperties> = ({ onEdit, refresh }) => {
           placeholder="SEARCH CUSTOMERS..."
           value={searchTerm}
           onChange={(input) => setSearchTerm(input.target.value)}
-          onKeyDown={(input) => input.key === 'Enter' && handleSearch()}
+          onKeyPress={(input) => input.key === 'Enter' && handleSearch()}
         />
         <button onClick={handleSearch}>SEARCH</button>
         <button onClick={() => { setSearchTerm(''); loadCustomers(); }}>CLEAR</button>
@@ -73,17 +70,12 @@ const CustomerList: React.FC<CustomerProperties> = ({ onEdit, refresh }) => {
         </thead>
         
         <tbody>
-          {isLoading && (
-            <tr>
-              <td colSpan={3}>LOADING...</td>
-            </tr>
-          )}
-          {!isLoading && customers.length === 0 && (
+          {customers.length === 0 && (
             <tr>
               <td colSpan={3}>NO CUSTOMERS FOUND</td>
             </tr>
           )}
-          {!isLoading && customers.length > 0 && customers.map((customer) => (
+          {customers.length > 0 && customers.map((customer) => (
             <tr key={customer.id}>
               <td>{customer.firstName} {customer.lastName}</td>
               <td>{customer.email}</td>
