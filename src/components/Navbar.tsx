@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
+import { motion } from 'framer-motion';
 import { ThemeContext } from '../App';
 
 const Navbar = () => {
@@ -20,12 +21,21 @@ const Navbar = () => {
       </div>
       <div className="theme-toggle-container">
         <span className="toggle-label">{darkMode ? 'Night' : 'Day'}</span>
-        <div 
+        <motion.div 
           className={`theme-toggle ${darkMode ? 'dark' : 'light'}`} 
           onClick={toggleDarkMode}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <div className="toggle-circle"></div>
-        </div>
+          <motion.div 
+            className="toggle-circle"
+            animate={{ 
+              x: darkMode ? 22 : 0,
+              backgroundColor: darkMode ? "#aabbff" : "#ffffff"
+            }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          />
+        </motion.div>
       </div>
     </nav>
   );

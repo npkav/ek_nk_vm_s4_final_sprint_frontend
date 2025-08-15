@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import RoleList from '../components/RoleList';
 import RoleForm from '../components/RoleForm';
 import DepartmentList from '../components/DepartmentList';
@@ -60,20 +61,29 @@ const RolePage: React.FC<RolePageProps> = ({ departments = [], refreshData = () 
           onClick={() => handleSectionClick(1)}
         >
           <h3>View all roles</h3>
-          {activeSection === 1 && (
-            <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              {!showRoleForm ? (
-                <RoleList onEdit={handleEditRole} refresh={false} departments={departments} />
-              ) : (
-                <RoleForm 
-                  role={editingRole}
-                  departments={departments}
-                  onSuccess={handleFormSuccess}
-                  onCancel={handleFormCancel}
-                />
-              )}
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 1 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {!showRoleForm ? (
+                  <RoleList onEdit={handleEditRole} refresh={false} departments={departments} />
+                ) : (
+                  <RoleForm 
+                    role={editingRole}
+                    departments={departments}
+                    onSuccess={handleFormSuccess}
+                    onCancel={handleFormCancel}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -81,16 +91,25 @@ const RolePage: React.FC<RolePageProps> = ({ departments = [], refreshData = () 
           onClick={() => handleSectionClick(2)}
         >
           <h3>Add new role</h3>
-          {activeSection === 2 && (
-            <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <RoleForm 
-                role={null}
-                departments={departments}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 2 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <RoleForm 
+                  role={null}
+                  departments={departments}
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -98,19 +117,28 @@ const RolePage: React.FC<RolePageProps> = ({ departments = [], refreshData = () 
           onClick={() => handleSectionClick(3)}
         >
           <h3>View department structure</h3>
-          {activeSection === 3 && (
-            <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              {!showDeptForm ? (
-                <DepartmentList onEdit={handleEditDepartment} refresh={false} />
-              ) : (
-                <DepartmentForm 
-                  department={editingDepartment}
-                  onSuccess={handleFormSuccess}
-                  onCancel={handleFormCancel}
-                />
-              )}
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 3 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {!showDeptForm ? (
+                  <DepartmentList onEdit={handleEditDepartment} refresh={false} />
+                ) : (
+                  <DepartmentForm 
+                    department={editingDepartment}
+                    onSuccess={handleFormSuccess}
+                    onCancel={handleFormCancel}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -118,15 +146,24 @@ const RolePage: React.FC<RolePageProps> = ({ departments = [], refreshData = () 
           onClick={() => handleSectionClick(4)}
         >
           <h3>Add new department</h3>
-          {activeSection === 4 && (
-            <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <DepartmentForm 
-                department={null}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 4 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <DepartmentForm 
+                  department={null}
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

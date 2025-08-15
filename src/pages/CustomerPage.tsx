@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import CustomerList from '../components/CustomerList';
 import CustomerForm from '../components/CustomerForm';
 import IssueList from '../components/IssueList';
@@ -64,19 +65,28 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, refreshData }) =
           onClick={() => handleSectionClick(1)}
         >
           <h3>View all customers</h3>
-          {activeSection === 1 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              {!showForm ? (
-                <CustomerList onEdit={handleEditCustomer} refresh={false} />
-              ) : (
-                <CustomerForm 
-                  customer={editingCustomer}
-                  onSuccess={handleFormSuccess}
-                  onCancel={handleFormCancel}
-                />
-              )}
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 1 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {!showForm ? (
+                  <CustomerList onEdit={handleEditCustomer} refresh={false} />
+                ) : (
+                  <CustomerForm 
+                    customer={editingCustomer}
+                    onSuccess={handleFormSuccess}
+                    onCancel={handleFormCancel}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -84,24 +94,33 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, refreshData }) =
           onClick={() => handleSectionClick(2)}
         >
           <h3>View all issues</h3>
-          {activeSection === 2 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              {!showIssueForm ? (
-                <IssueList 
-                  onEdit={handleEditIssue} 
-                  refresh={false} 
-                  customers={customers}
-                />
-              ) : (
-                <IssueForm
-                  issue={editingIssue}
-                  customers={customers}
-                  onSuccess={handleFormSuccess}
-                  onCancel={handleFormCancel}
-                />
-              )}
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 2 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {!showIssueForm ? (
+                  <IssueList 
+                    onEdit={handleEditIssue} 
+                    refresh={false} 
+                    customers={customers}
+                  />
+                ) : (
+                  <IssueForm
+                    issue={editingIssue}
+                    customers={customers}
+                    onSuccess={handleFormSuccess}
+                    onCancel={handleFormCancel}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -109,16 +128,25 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, refreshData }) =
           onClick={() => handleSectionClick(3)}
         >
           <h3>Report new issue for a customer</h3>
-          {activeSection === 3 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <IssueForm
-                issue={null}
-                customers={customers}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 3 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <IssueForm
+                  issue={null}
+                  customers={customers}
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -126,15 +154,24 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, refreshData }) =
           onClick={() => handleSectionClick(4)}
         >
           <h3>Add new customer</h3>
-          {activeSection === 4 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <CustomerForm
-                customer={null}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 4 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <CustomerForm
+                  customer={null}
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

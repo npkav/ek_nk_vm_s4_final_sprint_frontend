@@ -11,6 +11,7 @@ import RolePage from './pages/RolePage';
 
 // Components
 import Navbar from './components/Navbar';
+import VidBG from './components/VidBG';
 
 // Services
 import { customerService } from './services/customerService';
@@ -69,9 +70,7 @@ function App() {
       setIssues(issuesData);
       setDepartments(departmentsData);
       setRoles(rolesData);
-    } catch (err) {
-      console.error('Failed to load initial data:', err);
-    }
+    } catch (err) {console.error('Failed to load initial data:', err);}
   };
 
   const refreshData = () => {
@@ -86,7 +85,8 @@ function App() {
   return (
     <ThemeContext.Provider value={themeContextValue}>
       <Router>
-        <div className="app-container">
+        <VidBG isDarkMode={darkMode} />
+        <div className="app-container" key={`theme-${darkMode}`}>
           <Navbar />
           <main className="main-content">
             <Routes>
