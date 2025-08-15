@@ -111,6 +111,7 @@ function App() {
               <Route 
                 path="/roles" 
                 element={<RolePage 
+                  departments={departments}
                   refreshData={refreshData} 
                 />} 
               />
