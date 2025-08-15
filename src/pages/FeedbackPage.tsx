@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import FeedbackList from '../components/FeedbackList';
 import FeedbackForm from '../components/FeedbackForm';
 import type { Customer, Issue, Feedback } from '../types';
@@ -50,26 +51,35 @@ const FeedbackPage: React.FC<FeedbackPageProps> = ({ customers, issues, refreshD
           onClick={() => handleSectionClick(1)}
         >
           <h3>View all feedback</h3>
-          {activeSection === 1 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              {!showForm ? (
-                <FeedbackList 
-                  onEdit={handleEditFeedback} 
-                  refresh={false} 
-                  customers={customers}
-                  issues={issues}
-                />
-              ) : (
-                <FeedbackForm
-                  feedback={editingFeedback}
-                  customers={customers}
-                  issues={issues}
-                  onSuccess={handleFormSuccess}
-                  onCancel={handleFormCancel}
-                />
-              )}
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 1 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {!showForm ? (
+                  <FeedbackList 
+                    onEdit={handleEditFeedback} 
+                    refresh={false} 
+                    customers={customers}
+                    issues={issues}
+                  />
+                ) : (
+                  <FeedbackForm
+                    feedback={editingFeedback}
+                    customers={customers}
+                    issues={issues}
+                    onSuccess={handleFormSuccess}
+                    onCancel={handleFormCancel}
+                  />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div 
@@ -77,17 +87,26 @@ const FeedbackPage: React.FC<FeedbackPageProps> = ({ customers, issues, refreshD
           onClick={() => handleSectionClick(2)}
         >
           <h3>Submit new feedback</h3>
-          {activeSection === 2 && (
-          <div className="section-content" onClick={(e) => e.stopPropagation()}>
-              <FeedbackForm
-                feedback={null}
-                customers={customers}
-                issues={issues}
-                onSuccess={handleFormSuccess}
-                onCancel={handleFormCancel}
-              />
-            </div>
-          )}
+          <AnimatePresence>
+            {activeSection === 2 && (
+              <motion.div 
+                className="section-content" 
+                onClick={(e) => e.stopPropagation()}
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <FeedbackForm
+                  feedback={null}
+                  customers={customers}
+                  issues={issues}
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
