@@ -7,16 +7,16 @@ import DepartmentForm from '../components/DepartmentForm';
 import type { Role, Department } from '../types';
 
 interface RolePageProps {
+  departments: Department[];
   refreshData?: () => void;
 }
 
-const RolePage: React.FC<RolePageProps> = ({ refreshData = () => {} }) => {
+const RolePage: React.FC<RolePageProps> = ({ departments = [], refreshData = () => {} }) => {
   const [activeSection, setActiveSection] = useState<number | null>(null);
   const [showRoleForm, setShowRoleForm] = useState(false);
   const [showDeptForm, setShowDeptForm] = useState(false);
   const [editingRole, setEditingRole] = useState<Role | null>(null);
   const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
-  const [departments] = useState<Department[]>([]);
 
   const handleSectionClick = (sectionNumber: number) => {
     setActiveSection(sectionNumber === activeSection ? null : sectionNumber);
