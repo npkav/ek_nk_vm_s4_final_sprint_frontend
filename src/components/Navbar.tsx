@@ -30,7 +30,7 @@ const Navbar = () => {
           <motion.div 
             className="toggle-circle"
             animate={{ 
-              x: darkMode ? 22 : 0,
+              x: darkMode ? 0 : 0,
               backgroundColor: darkMode ? "#aabbff" : "#ffffff"
             }}
             transition={{ type: "spring", stiffness: 500, damping: 30 }}
